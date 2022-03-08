@@ -7,6 +7,8 @@
 
 set -e
 
+DO_UPDATE=0
+
 parentDirectory="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
 dotfilesDirectory="$(cd "$parentDirectory/.." && pwd -P)"
 
@@ -30,6 +32,9 @@ while test $# -gt 0; do
 			exec "$EDITOR" "$dotfilesDirectory"
 			exit
 			;;
+		"-u"|"--update")
+			DO_UPDATE=1
+			;;
 		*)
 			echo "Invalid option: $1"
 			displayUsageAndExit
@@ -43,9 +48,11 @@ export DOTFILES=${dotfilesDirectory}
 # Install homebrew
 ${DOTFILES}/homebrew/install.sh 2>&1
 
-# Upgrade homebrew
-echo "› brew update"
-brew update
+if [ "${DO_UPDATE}" == "1" ]; then
+	# Upgrade homebrew
+	echo "› brew update"
+	brew update
+fi
 
 # Install software
 echo "› ${DOTFILES}/script/install"
