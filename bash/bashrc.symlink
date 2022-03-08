@@ -5,7 +5,6 @@ export DOTFILES=${HOME}/.dotfiles
 # of your main dotfiles repository (which may be public, like this one), but
 # you'll have access to them in your scripts.
 if [ -f ~/.localrc ]; then
-then
   source ~/.localrc
 fi
 

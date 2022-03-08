@@ -10,7 +10,7 @@ source "$(dirname $0)"/../script/bashpodlib.sh
 if test ! $(which brew)
 then
   echo "  Installing Homebrew for you."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
 
   check_brew_command powerline-go
