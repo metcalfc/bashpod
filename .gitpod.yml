@@ -1,12 +1,15 @@
 image:
   file: .gitpod.Dockerfile
 
-checkoutLocation: "/home/gitpod/.dotfiles"
-workspaceLocation: "/home/gitpod/.dotfiles"
+checkoutLocation: "dotfiles"
+workspaceLocation: "dotfiles"
 
 tasks:
   - name: Dotfiles
-    command: cd /home/gitpod/.dotfiles" && ./bootstrap.sh
+    command: >
+      rm -rf ~/.dotfiles
+      ln -s /workspace/dotfiles /home/gitpod/.dotfiles"
+      cd /home/gitpod/.dotfiles && ./bootstrap.sh
 
 github:
   prebuilds:
