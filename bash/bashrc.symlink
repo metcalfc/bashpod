@@ -1,0 +1,33 @@
+# shortcut to this dotfiles path
+export DOTFILES=${HOME}/.dotfiles
+
+# Stash your environment variables in ~/.localrc. This means they'll stay out
+# of your main dotfiles repository (which may be public, like this one), but
+# you'll have access to them in your scripts.
+if [ -f ~/.localrc ]; then
+then
+  source ~/.localrc
+fi
+
+export PATH=${PATH}:${HOME}/${DOTFILES}/bin
+
+# **topic/path.bash**: Any file named `path.bash` is loaded first and is
+#  expected to setup `$PATH` or similar.
+for file in $(find . -type f -name "path.bash"); do
+    source $file
+done
+
+# **topic/\*.bash**: Any files ending in `.bash` get loaded into your
+#  environment.
+for file in $(find . -type f \
+                     -not -name "path.bash" \
+                     -not -name "completion.bash" \
+                     -name "*.bash"); do
+    source $file
+done
+
+# **topic/completion.bash**: Any file named `completion.bash` is loaded
+#  last and is expected to setup autocomplete.
+for file in $(find . -type f -name "completion.bash"); do
+    source $file
+done
