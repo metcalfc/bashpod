@@ -9,7 +9,7 @@ source "$(dirname $0)"/../script/bashpodlib.sh
 # Check for Homebrew
 if test ! $(which brew)
 then
-  if [ "${GITPOD_REPO_ROOT}" == "/workspace/dotfiles"]; then
+  if [ "${GITPOD_REPO_ROOT}" == "/workspace/dotfiles" ]; then
 
     echo "  Installing Homebrew in Gitpod for you to test."
     git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew
