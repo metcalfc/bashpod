@@ -26,7 +26,7 @@ for file in $(find . -type f \
 done
 
 if test -d ~/.bashrc.d; then
-    for FILE in $(ls ~/.bashrc.d); do source $FILE; done
+    for file in $(ls ~/.bashrc.d); do source ~/.bashrc.d/$file; done
 fi
 
 # **topic/completion.bash**: Any file named `completion.bash` is loaded
