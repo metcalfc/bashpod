@@ -37,6 +37,19 @@ function check_brew_command () {
 
 }
 
+function complete_command () {
+
+    cmd=${1}
+
+    if command -v ${cmd} &> /dev/null
+    then
+        source <(${cmd} completion bash)
+        return $?
+    fi
+
+}
+
+
 function check_brew_package () {
 
     pkg=${1}
