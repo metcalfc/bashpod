@@ -6,10 +6,7 @@ workspaceLocation: "dotfiles"
 
 tasks:
   - name: Dotfiles
-    command: >
-      rm -rf ~/.dotfiles
-      ln -s /workspace/dotfiles /home/gitpod/.dotfiles"
-      cd /home/gitpod/.dotfiles && ./bootstrap.sh
+    command: cat ~/.dotfiles
 
 github:
   prebuilds:
