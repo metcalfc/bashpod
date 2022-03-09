@@ -25,6 +25,10 @@ for file in $(find . -type f \
     source $file
 done
 
+if test -d ~/.bashrc.d; then
+    for FILE in $(ls ~/.bashrc.d); do source $FILE; done
+fi
+
 # **topic/completion.bash**: Any file named `completion.bash` is loaded
 #  last and is expected to setup autocomplete.
 for file in $(find . -type f -name "completion.bash"); do
