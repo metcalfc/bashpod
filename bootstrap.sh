@@ -17,15 +17,23 @@ setup_gitconfig () {
     info 'setup gitconfig'
 
     git_credential='cache'
-    if [ "$(uname -s)" == "Darwin" ]
+    if [ "$(uname -s)" == "Darwin" ];
     then
       git_credential='osxkeychain'
+    elif [ ! -z ${GITPOD_HOST} ];
+    then
+      git_credential='/usr/bin/gp credential-helper'
     fi
 
-    user ' - What is your github author name?'
-    read -e git_authorname
-    user ' - What is your github author email?'
-    read -e git_authoremail
+    if [ -z ${GITPOD_HOST} ]; then
+      user ' - What is your github author name?'
+      read -e git_authorname
+      user ' - What is your github author email?'
+      read -e git_authoremail
+    else
+      git_authorname=${GITPOD_GIT_USER_NAME}
+      git_authoremail=${GITPOD_GIT_USER_EMAIL}
+    fi
 
     sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
 
@@ -55,9 +63,15 @@ link_file () {
 
       else
 
-        user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
-        [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
-        read -n 1 action
+        case $- in
+          *i*)    # interactive shell
+            user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
+            [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+            read -n 1 action;;
+          *)      # non-interactive shell
+            action=B
+          ;;
+        esac
 
         case "$action" in
           o )
@@ -112,7 +126,7 @@ link_file () {
 install_dotfiles () {
   info 'installing dotfiles'
 
-  local overwrite_all=false backup_all=true skip_all=false
+  local overwrite_all=false backup_all=false skip_all=false
 
   for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
   do
@@ -123,14 +137,6 @@ install_dotfiles () {
 
 setup_gitconfig
 install_dotfiles
-
-info "installing dependencies"
-if source bin/dot | while read -r data; do info "$data"; done
-then
-  success "dependencies installed"
-else
-  fail "error installing dependencies"
-fi
 
 echo ''
 echo '  All installed!'
