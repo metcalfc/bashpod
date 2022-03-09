@@ -6,7 +6,7 @@ workspaceLocation: "dotfiles"
 
 tasks:
   - name: Dotfiles
-    command: cat ~/.dotfiles
+    command: cat ~/.dotfiles.log
 
 github:
   prebuilds:
