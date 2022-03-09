@@ -13,8 +13,6 @@ then
   echo "  Installing Homebrew for you."
   /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   
-  fi
-  
 fi
 
 check_brew_command powerline-go
