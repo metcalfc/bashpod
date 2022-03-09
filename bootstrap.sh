@@ -20,10 +20,12 @@ setup_gitconfig () {
     if [ "$(uname -s)" == "Darwin" ];
     then
       git_credential='osxkeychain'
-    elif [ ! -z ${GITPOD_HOST} ];
+    fi
+    if [ ! -z ${GITPOD_HOST} ];
     then
       git_credential='/usr/bin/gp credential-helper'
     fi
+    echo $git_credential
 
     if [ -z ${GITPOD_HOST} ]; then
       user ' - What is your github author name?'
@@ -35,7 +37,13 @@ setup_gitconfig () {
       git_authoremail=${GITPOD_GIT_USER_EMAIL}
     fi
 
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
+    cat << EOF > git/gitconfig.local.symlink
+[user]
+        name = ${git_authorname}
+        email = ${git_authoremail}
+[credential]
+        helper = ${git_credential}
+EOF
 
     success 'gitconfig'
   fi
